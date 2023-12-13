@@ -1,0 +1,8 @@
+image:
+  repository: grafana/loki
+  tag: 2.9.0
+
+hostname: loki.local
+
+traefik:
+  enabled: true

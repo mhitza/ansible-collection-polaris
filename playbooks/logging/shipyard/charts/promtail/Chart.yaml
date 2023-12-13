@@ -1,0 +1,11 @@
+name: promtail
+version: 1.0.0
+description: Promtail
+keywords:
+  - shipyard
+  - promtail
+  - logging
+apiVersion: v2
+maintainers:
+  - name: LinkORB Engineering
+    url: https://engineering.linkorb.com

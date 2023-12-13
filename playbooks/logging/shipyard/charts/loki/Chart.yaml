@@ -1,0 +1,11 @@
+name: loki
+version: 1.0.0
+description: Loki
+keywords:
+  - shipyard
+  - loki
+  - logging
+apiVersion: v2
+maintainers:
+  - name: LinkORB Engineering
+    url: https://engineering.linkorb.com

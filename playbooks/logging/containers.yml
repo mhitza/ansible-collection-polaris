@@ -1,0 +1,34 @@
+- name: Logging - containers
+  hosts: polaris_primary_swarm_managers
+  tags:
+    - polaris.logging
+    - polaris.logging.containers
+  tasks:
+    - name: Create config directories
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+      become: true
+      loop:
+        - /etc/loki
+        - /etc/promtail
+
+    - name: Generate Loki config
+      ansible.builtin.copy:
+        src: "files/loki-local-config.yaml"
+        dest: /etc/loki/local-config.yaml
+      become: true
+
+    - name: Generate Promtail config
+      ansible.builtin.copy:
+        src: "files/promtail-config.yaml"
+        dest: /etc/promtail/config.yaml
+      become: true
+
+    - name: Setup Loki and Promtail containers
+      import_role:
+        name: linkorb.shipyard
+      vars:
+        shipyard_tag: logging
+        shipyard_filename: "{{ playbook_dir }}/shipyard/shipyard.yaml"
+        shipyard_charts_path: "{{ playbook_dir }}/shipyard/charts"

@@ -1,0 +1,12 @@
+stacks:
+  - name: loki
+    chart: loki
+    host: {{ inventory_hostname }}
+    values: loki/values.yaml
+    tag: logging
+
+  - name: promtail
+    chart: promtail
+    host: {{ inventory_hostname }}
+    values: promtail/values.yaml
+    tag: logging

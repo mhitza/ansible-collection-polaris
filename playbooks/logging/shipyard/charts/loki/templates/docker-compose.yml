@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  loki:
+    image: {{ Values.image.repository }}:{{ Values.image.tag }}
+
+    volumes:
+      - /etc/loki/:/etc/loki/
+
+    command: -config.file=/etc/loki/local-config.yaml
+
+    deploy:
+      mode: global
+      labels:
+        - "orchestrator=shipyard"
+        - "traefik.enable=true"
+        - "traefik.http.routers.{{ Stack.name }}.rule=Host(`{{ Values.hostname }}`)"
+        - "traefik,http.routers.{{ Stack.name }}.service=loki"
+        - "traefik.http.services.{{ Stack.name }}.loadbalancer.server.port=3100"
+
+    networks:
+      - traefik
+
+
+networks:
+  traefik:
+    external: true

@@ -1,0 +1,31 @@
+version: "3"
+
+services:
+  promtail:
+    image: {{ Values.image.repository }}:{{ Values.image.tag }}
+
+    volumes:
+      - /etc/promtail/:/etc/promtail/
+      - /var/log/:/var/log/
+      # Mounts required for promtail to read journal files, and label them
+      - /run/log/journal/:/run/log/journal/
+      - /etc/machine-id:/etc/machine-id
+
+    command: -config.file=/etc/promtail/config.yaml
+
+    networks:
+      - traefik
+
+    deploy:
+      mode: global
+      labels:
+        - "orchestrator=shipyard"
+        - "traefik.enable=true"
+        - "traefik.http.routers.{{ Stack.name }}.rule=Host(`{{ Values.hostname }}`)"
+        - "traefik,http.routers.{{ Stack.name }}.service=promtail"
+        - "traefik.http.services.{{ Stack.name }}.loadbalancer.server.port=9080"
+
+
+networks:
+  traefik:
+    external: true
